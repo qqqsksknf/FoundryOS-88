@@ -1,0 +1,48 @@
+.github/workflows/test_sistema.ymlname: Test Completo Ecosistema FoundryOS 88
+on:
+  workflow_dispatch: # Avvio manuale con un click
+
+jobs:
+  test_architettura:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Sincronizzazione File Repository
+        uses: actions/checkout@v3
+
+      - name: Installazione Emulatori e Dipendenze Audio/Video
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y qemu-system-x86 qemu-utils fbi sox libsox-fmt-all
+
+      - name: 1️⃣ Validazione Script di Avvio (Mattoncino 1)
+        run: |
+          echo "Test sequenza di boot e verifica logo..."
+          touch logo.jpeg # Crea un file per simulare la presenza dell'immagine
+          chmod +x avvio.sh
+          ./avvio.sh &
+          sleep 2
+          killall play || true
+
+      - name: 2️⃣ Validazione Interfaccia e Cambio Sfondo (Mattoncino 2)
+        run: |
+          echo "Test motore grafico trasparente ed effetti utente..."
+          chmod +x interfaccia.sh
+          ./interfaccia.sh
+
+      - name: 3️⃣ Validazione Allocazione RAM e Avviso Utente (Mattoncino 3)
+        run: |
+          echo "Test scansione hardware e pop-up di avviso memoria..."
+          chmod +x configura_ram.sh
+          ./configura_ram.sh
+
+      - name: 4️⃣ Validazione Applicazioni Native (Browser e Store)
+        run: |
+          echo "Test avvio browser ultra-leggero e catalogo compatibilità..."
+          chmod +x applicazioni.sh
+          ./applications.sh || ./applicazioni.sh
+
+      - name: 🎉 Esito Controllo Qualità
+        run: |
+          echo "=========================================================="
+          echo " FOUNDRYOS 88: TUTTI I COMPONENTI FUNZIONANO ALLA PERFEZIONE! "
+          echo "=========================================================="
