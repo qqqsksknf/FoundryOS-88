@@ -1,0 +1,25 @@
+name: Compila e Crea Pacchetto FoundryOS 88
+on:
+  workflow_dispatch: # Ti permette di farlo partire con un click
+
+jobs:
+  crea_immagine:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Scarica i file di FoundryOS 88
+        uses: actions/checkout@v3
+
+      - name: Creazione pacchetto d'installazione (.img)
+        run: |
+          echo "Compilazione dell'architettura in corso..."
+          mkdir -p sistema_f88
+          cp *.sh sistema_f88/
+          if [ -f "logo.jpeg" ]; then cp logo.jpeg sistema_f88/; fi
+          tar -czvf foundryos_88_installazione.tar.gz sistema_f88/
+          echo "Pacchetto creato con successo!"
+
+      - name: Carica il file pronto da scaricare
+        uses: actions/upload-artifact@v4
+        with:
+          name: pacchetto-tablet-foundryos88
+          path: foundryos_88_installazione.tar.gz
