@@ -1,5 +1,5 @@
 #!/bin/bash
-# FOUNDRYOS 88 - SCRIPT DI AVVIO CON LOGO REALE
+# FOUNDRYOS 88 - SCRIPT DI AVVIO CON LOGO REALE (.JPEG)
 
 echo "Inizializzazione FoundryOS 88..."
 
@@ -15,15 +15,18 @@ echo "               POWERED BY                     "
 echo "=============================================="
 sleep 1.5
 
-# 3. CARICAMENTO DEL LOGO UFFICIALE DEL PROGETTO
-# Questo comando apre l'immagine logo.png a tutto schermo sul tablet
+# 3. CARICAMENTO DEL LOGO REALE (.JPEG / .JPG)
 clear
-if [ -f "logo.png" ]; then
-    # Visualizza l'immagine reale caricata dall'utente
-    fbi -d /dev/fb0 -T 1 -noverbose -a logo.png
+if [ -f "logo.jpeg" ]; then
+    # Visualizza l'immagine reale .jpeg caricata dall'utente
+    fbi -d /dev/fb0 -T 1 -noverbose -a logo.jpeg
+elif [ -f "logo.jpg" ]; then
+    # Visualizza l'immagine se salvata come .jpg
+    fbi -d /dev/fb0 -T 1 -noverbose -a logo.jpg
 else
     # Messaggio di riserva se l'immagine non viene trovata
-    echo "[ LOGO PROGETTO 88 IN CARICAMENTO ]"
+    echo "[ ERRORE: Carica il file logo.jpeg su GitHub ]"
+    echo "[ LOGO PROGETTO 88 IN CARICAMENTO GENERICO ]"
 fi
 
 sleep 2.0
